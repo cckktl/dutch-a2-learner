@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EXAM_INFO = {
   lezen: { name: "Lezen", icon: "📖", duration: "65 min", format: "電腦作答，閱讀文章回答選擇題", tip: "會出現廣告、信件、通知、說明書等日常文本" },
@@ -61,10 +61,26 @@ function DutchA2App() {
   const [answers, setAnswers] = useState({});
   const [showAnswers, setShowAnswers] = useState({});
   const [completedDays, setCompletedDays] = useState(new Set());
+  const [hydrated, setHydrated] = useState(false);
 
-  const day = COURSE_DATA[currentDay];
+  useEffect(() => {
+    const savedDay = localStorage.getItem('dutch_currentDay');
+    const savedCompleted = localStorage.getItem('dutch_completedDays');
+    if (savedDay) setCurrentDay(Number(savedDay));
+    if (savedCompleted) setCompletedDays(new Set(JSON.parse(savedCompleted)));
+    setHydrated(true);
+  }, []);
 
-  const markComplete = () => setCompletedDays(prev => new Set([...prev, currentDay]));
+  useEffect(() => {
+    if (!hydrated) return;
+    localStorage.setItem('dutch_currentDay', currentDay);
+  }, [currentDay, hydrated]);
+
+  const markComplete = () => setCompletedDays(prev => {
+    const next = new Set([...prev, currentDay]);
+    localStorage.setItem('dutch_completedDays', JSON.stringify([...next]));
+    return next;
+  });
 
   return (
     <div style={S.container}>

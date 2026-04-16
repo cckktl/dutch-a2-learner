@@ -82,6 +82,10 @@ function DutchA2App() {
     return next;
   });
 
+  if (!hydrated) return <div style={{background:'#0d1117',minHeight:'100vh'}} />;
+
+  const day = COURSE_DATA[currentDay];
+
   return (
     <div style={S.container}>
       <div style={S.header}>

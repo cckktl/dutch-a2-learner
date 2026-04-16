@@ -9,7 +9,7 @@ const nunito = Nunito({
 });
 
 const notoSansTC = Noto_Sans_TC({
-  subsets: ['chinese-traditional'],
+  subsets: ['latin'],
   weight: ['400', '500', '700'],
   variable: '--font-noto-sans-tc',
   display: 'swap',
